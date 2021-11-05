@@ -54,7 +54,7 @@ VOID CValve::initSDK()
 	char szDebugString[1024];
 #endif
 
-	auto ClientFactory = ( CreateInterfaceFn )( GetProcAddress( GetModuleHandleA(/*client_panorama*/XorStr<0xBC, 16, 0xD9220E20>( "\xDF\xD1\xD7\xDA\xAE\xB5\x9D\xB3\xA5\xAB\xA9\xB5\xA9\xA4\xAB" + 0xD9220E20 ).s ), /*CreateInterface*/XorStr<0x8B, 16, 0x507A77F7>( "\xC8\xFE\xE8\xEF\xFB\xF5\xD8\xFC\xE7\xF1\xE7\xF0\xF6\xFB\xFC" + 0x507A77F7 ).s ) );
+	auto ClientFactory = ( CreateInterfaceFn )( GetProcAddress( GetModuleHandleA(/*client*/XorStr<0x41, 7, 0xAFB21C5E>( "\x22\x2E\x2A\x21\x2B\x32" + 0xAFB21C5E ).s), /*CreateInterface*/XorStr<0x8B, 16, 0x507A77F7>( "\xC8\xFE\xE8\xEF\xFB\xF5\xD8\xFC\xE7\xF1\xE7\xF0\xF6\xFB\xFC" + 0x507A77F7 ).s ) );
 	auto AppSystemFactory = ( CreateInterfaceFn )( **( DWORD** )( Base::Utils::PatternSearch(/*engine*/XorStr<0x62, 7, 0x5AA493CE>( "\x07\x0D\x03\x0C\x08\x02" + 0x5AA493CE ).s, ( PBYTE )"\xFF\x15\x00\x00\x00\x00\x6A\x00\x68\x00\x00\x00\x00\xA3\x00\x00\x00\x00", /*xx????xxx????x????*/XorStr<0xDA, 19, 0x263614AA>( "\xA2\xA3\xE3\xE2\xE1\xE0\x98\x99\x9A\xDC\xDB\xDA\xD9\x9F\xD7\xD6\xD5\xD4" + 0x263614AA ).s, NULL, NULL ) + 2 ) );
 
 	//DWORD dwCLMoveAddress = Base::Utils::PatternSearch( /*engine.dll*/XorStr<0xA1,11,0xE75EB804>("\xC4\xCC\xC4\xCD\xCB\xC3\x89\xCC\xC5\xC6"+0xE75EB804).s,(PBYTE)"\x55\x8B\xEC\x83\xEC\x4C\x53\x56\x57\x8B\x3D",/*xxxxxxxxxxx*/XorStr<0xEF,12,0xC7505732>("\x97\x88\x89\x8A\x8B\x8C\x8D\x8E\x8F\x80\x81"+0xC7505732).s,NULL,NULL);
@@ -81,7 +81,7 @@ VOID CValve::initSDK()
 	Base::Debug::LOG(szDebugString);
 #endif
 
-	pGlobalVars = **(ValveSDK::CGlobalVars***)(((*(PDWORD*)g_Valve.pClient)[0]) + GLOBALSOFFSET);		
+	pGlobalVars = **(ValveSDK::CGlobalVars***)(((*(PDWORD*)g_Valve.pClient)[11]) + GLOBALSOFFSET);		
 
 #ifdef DEBUGMODE
 	sprintf(szDebugString, "g_pGlobalVars: 0x%x", (DWORD)pGlobalVars);

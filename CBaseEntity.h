@@ -104,7 +104,7 @@ public:
 
 	bool IsPlayer()
 	{
-		return getvfunc<bool( __thiscall* )( void* )>( this, 155 )( this );
+		return getvfunc<bool( __thiscall* )( void* )>( this, 158 )( this );
 	}
 
 	model_t* GetModel()
@@ -214,7 +214,7 @@ public:
 	{
 		bool bRet;
 
-		PVOID pAnimating = (PVOID)this;
+		PVOID pAnimating = ( PVOID )this;
 
 		__asm
 		{

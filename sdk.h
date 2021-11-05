@@ -42,15 +42,15 @@ inline void VectorAdd(const Vector& a, const Vector& b, Vector& c)
 #define VERIFIEDCMDOFFSET 0xF8
 #define MULTIPLAYER_BACKUP 150
 //#define CURRENTCOMMANDOFFSET 0x100C
-#define CURRENTPLAYERCOMMANDOFFSET 0x1640
+//#define CURRENTPLAYERCOMMANDOFFSET 0x1640
 #define PREIDCTIONSEEDOFFSET 0x1A
 #define PREDICTIONPLAYEROFFSET 0x2D
-#define GLOBALSOFFSET 0x1B
-#define INPUTOFFSET 0x20
-#define GETSPREADOFFSET 0x5CC
+#define GLOBALSOFFSET 0xA
+//#define INPUTOFFSET 0x20
+/*#define GETSPREADOFFSET 0x5CC
 #define GETCONEOFFSET 0x5D0
 #define UPDATEACCURACYPENALTYOFFSET 0x5D4
-#define WEAPONIDOFFSET 0x5A0
+#define WEAPONIDOFFSET 0x5A0*/
 //#define APPSYSTEMFACTORYOFFSET 0x2A
 //#define CLIENTFACTORYOFFSET 0x67
 
@@ -128,7 +128,9 @@ struct mstudiobbox_t
 	Vector									bbmin;
 	Vector									bbmax;
 	int                                     szhitboxnameindex;
-	int                                     unused[8];
+	Vector offsetorientation;
+	float radius;
+	byte                                     unused[0x10];
 
 	const char* pszHitboxName() const
 	{
@@ -150,7 +152,22 @@ struct mstudiohitboxset_t
 
 struct studiohdr_t
 {
-	unsigned char           pad[0xAC];
+	int id;
+	int version;
+	long checksum;
+	char name_char_array[ 64 ];
+	int length;
+	Vector eye_pos;
+	Vector illium_pos;
+	Vector hull_mins;
+	Vector hull_maxs;
+	Vector mins;
+	Vector maxs;
+	int flags;
+	int bones_count;
+	int bone_index;
+	int bone_controllers_count;
+	int bone_controller_index;
 	int                                     numhitboxsets;
 	int                                     hitboxsetindex;
 

@@ -6,6 +6,30 @@ Vector GetBoneFromMatrix(matrix3x4_t *MatrixArray, int iBone)
 	return Vector(MatrixArray[iBone][0][3], MatrixArray[iBone][1][3], MatrixArray[iBone][2][3]);
 }
 
+void CalcAngle( Vector& vSource, Vector& vDestination, Vector& qAngle )
+{
+	Vector vDelta = vSource - vDestination;
+
+	float fHyp = ( vDelta.x * vDelta.x ) + ( vDelta.y * vDelta.y );
+
+	float fRoot;
+
+	__asm
+	{
+		sqrtss xmm0, fHyp
+		movss fRoot, xmm0
+	}
+
+	qAngle.x = RAD2DEG( atan( vDelta.z / fRoot ) );
+	qAngle.y = RAD2DEG( atan( vDelta.y / vDelta.x ) );
+
+	if( vDelta.x >= 0.0f )
+		qAngle.y += 180.0f;
+
+	qAngle.x = g_NoSpread.AngleNormalize( qAngle.x );
+	qAngle.y = g_NoSpread.AngleNormalize( qAngle.y );
+}
+
 void GetMaterialParameters(char sMaterial, float &fPenetrationPowerModifier, float &fDamageModifier)
 {
 	switch(sMaterial)
@@ -56,7 +80,7 @@ void ClipTraceToPlayers( const Vector& vecAbsStart, const Vector& vecAbsEnd, uns
 
 	if( dwCliptracetoplayers == NULL )
 	{
-		dwCliptracetoplayers = Base::Utils::PatternSearch(/*client_panorama*/XorStr<0xA1, 16, 0x9A51BE87>( "\xC2\xCE\xCA\xC1\xCB\xD2\xF8\xD8\xC8\xC4\xC4\xDE\xCC\xC3\xCE" + 0x9A51BE87 ).s, ( PBYTE )"\x53\x8B\xDC\x83\xEC\x08\x83\xE4\xF0\x83\xC4\x04\x55\x8B\x6B\x04\x89\x6C\x24\x04\x8B\xEC\x81\xEC\xD8\x00\x00\x00\x0F\x57\xC9",/*xxxxxxxxxxxxxxxxxxxxxxxxx???xxx*/XorStr<0xDC, 32, 0x481976AD>( "\xA4\xA5\xA6\xA7\x98\x99\x9A\x9B\x9C\x9D\x9E\x9F\x90\x91\x92\x93\x94\x95\x96\x97\x88\x89\x8A\x8B\x8C\xCA\xC9\xC8\x80\x81\x82" + 0x481976AD ).s, NULL, NULL );
+		dwCliptracetoplayers = Base::Utils::PatternSearch(/*client*/XorStr<0x41, 7, 0xAFB21C5E>( "\x22\x2E\x2A\x21\x2B\x32" + 0xAFB21C5E ).s, ( PBYTE )"\x53\x8B\xDC\x83\xEC\x08\x83\xE4\xF0\x83\xC4\x04\x55\x8B\x6B\x04\x89\x6C\x24\x04\x8B\xEC\x81\xEC\xD8\x00\x00\x00\x0F\x57\xC9", "xxxxxxxxxxxxxxxxxxxxxxxxx???xxx", NULL, NULL );
 #ifdef DEBUGMODE
 		char szAddress[ 256 ];
 		sprintf( szAddress, "ClipTraceToPlayers: 0x%x", dwCliptracetoplayers );
@@ -95,20 +119,6 @@ bool bIsPointPenetrable(WeaponInfo_t wiWeaponInfo, Vector vStart, Vector vEnd)
 	float fCurrentDamage = wiWeaponInfo.iDamage;
 
 	float fPenetrationPower = wiWeaponInfo.fPenetrationPower;
-
-	static DWORD dwCliptracetoplayers = NULL;
-
-	if(dwCliptracetoplayers == NULL)
-	{
-		dwCliptracetoplayers = Base::Utils::PatternSearch(/*client_panorama*/XorStr<0xA1, 16, 0x9A51BE87>( "\xC2\xCE\xCA\xC1\xCB\xD2\xF8\xD8\xC8\xC4\xC4\xDE\xCC\xC3\xCE" + 0x9A51BE87 ).s,(PBYTE)"\x53\x8B\xDC\x83\xEC\x08\x83\xE4\xF0\x83\xC4\x04\x55\x8B\x6B\x04\x89\x6C\x24\x04\x8B\xEC\x81\xEC\xD8\x00\x00\x00\x0F\x57\xC9",/*xxxxxxxxxxxxxxxxxxxxxxxxx???xxx*/XorStr<0xDC, 32, 0x481976AD>( "\xA4\xA5\xA6\xA7\x98\x99\x9A\x9B\x9C\x9D\x9E\x9F\x90\x91\x92\x93\x94\x95\x96\x97\x88\x89\x8A\x8B\x8C\xCA\xC9\xC8\x80\x81\x82" + 0x481976AD ).s,NULL,NULL);
-#ifdef DEBUGMODE
-		char szAddress[256];
-		sprintf(szAddress,"ClipTraceToPlayers: 0x%x",dwCliptracetoplayers);
-		Base::Debug::LOG(szAddress);
-#endif
-	}
-
-	//static ClipTraceToPlayers_t ClipTraceToPlayersCall = (ClipTraceToPlayers_t)dwCliptracetoplayers;
 
 	float fRange = Vector(vEnd - vStart).Length();
 
@@ -211,7 +221,7 @@ bool CAimbot::MultiPoints(CBaseEntity* pPlayer, Vector &vPos, int iHitBox)
 
 	matrix3x4_t matrix[128];
 
-	if (!pPlayer->SetupBones(matrix, 128, 0x00000100, 0.0f))
+	if (!pPlayer->SetupBones(matrix, 128, 0x00000100, g_Valve.pGlobalVars->curtime))
 		return false;
 
 	studiohdr_t* hdr = g_Valve.pModel->GetStudiomodel(pPlayer->GetModel());
@@ -293,30 +303,6 @@ bool GetHiboxPosition(CBaseEntity* pPlayer, Vector &vPos, int iHitBox)
 	return true;
 }
 
-void CalcAngle(Vector &vSource, Vector &vDestination, Vector &qAngle)
-{
-	Vector vDelta = vSource - vDestination;
-
-	float fHyp = (vDelta.x * vDelta.x) + (vDelta.y * vDelta.y);
-
-	float fRoot;
-
-	__asm
-	{
-		sqrtss xmm0, fHyp
-		movss fRoot, xmm0
-	}
-
-	qAngle.x = RAD2DEG(atan(vDelta.z / fRoot));
-	qAngle.y = RAD2DEG(atan(vDelta.y / vDelta.x));
-
-	if(vDelta.x >= 0.0f)
-		qAngle.y += 180.0f;
-
-	qAngle.x = g_NoSpread.AngleNormalize(qAngle.x);
-	qAngle.y = g_NoSpread.AngleNormalize(qAngle.y);
-}
-
 float GetFov(Vector vLocalOrigin, Vector vPosition, Vector vForward)
 {
 	Vector vLocal;
@@ -345,7 +331,7 @@ bool CAimbot::IsVisible(Vector vStart, Vector vEnd, unsigned int nMask, ValveSDK
 	ray.Init(vStart,vEnd);
 	g_Valve.pEngineTrace->TraceRay(ray,nMask,pTraceFilter,&tr);
 
-	return (tr.fraction == 1.0f);
+	return (tr.fraction > 0.97f);
 }
 
 void CAimbot::FixMovement(ValveSDK::CInput::CUserCmd* c, Vector &qOld, int iPositive)
@@ -363,14 +349,14 @@ void CAimbot::FixMovement(ValveSDK::CInput::CUserCmd* c, Vector &qOld, int iPosi
 
 void GetWeaponInfo(ValveSDK::CBaseCombatWeapon *pWeapon, WeaponInfo_t &wiInfo, int iWeaponID, bool bSilencer)
 {
-	auto weapondata = pWeapon->GetWeaponData( );
+	auto weapondata = ( CCSWeaponData* )pWeapon->GetWeaponData( );
 	if( !weapondata ) return;
 
-	wiInfo.iBulletType = *( int* )( ( DWORD )weapondata + 200 );
-	wiInfo.iPenetration = *( int* )( ( DWORD )weapondata + 252 );
-	wiInfo.iDamage = *( int* )( ( DWORD )weapondata + 240 );
-	wiInfo.fMaxRange = *( float* )( ( DWORD )weapondata + 264 );
-	wiInfo.fRangeModifier = *( float* )( ( DWORD )weapondata + 268 );
+	wiInfo.iBulletType = weapondata->nWeaponType;
+	wiInfo.iPenetration = weapondata->flPenetration;
+	wiInfo.iDamage = weapondata->iDamage;
+	wiInfo.fMaxRange = weapondata->flRange;
+	wiInfo.fRangeModifier = weapondata->flRangeModifier;
 
 	// i guess ill just use values from outlassn's autowall
 
@@ -418,7 +404,7 @@ void CAimbot::Main(ValveSDK::CInput::CUserCmd* pUserCmd, CBaseEntity* pLocal, Va
 		|| fWhiteList[ax]
 		|| (!g_CVARS.CvarList[AimTeam] && pBaseEntity->GetTeamNum() == iMyTeam)
 		|| (g_CVARS.CvarList[AntiDM] && pBaseEntity->IsSpawnProtectedPlayer())
-		|| !MultiPoints(pBaseEntity,vTarget,(fSpecialAimspot[ax] != -1 ? fSpecialAimspot[ax] : g_CVARS.CvarList[AimSpot])))
+		|| !MultiPoints( pBaseEntity, vTarget, ( fSpecialAimspot[ ax ] != -1 ? fSpecialAimspot[ ax ] : g_CVARS.CvarList[ AimSpot ] ) ) )
 			continue;
 
 		float fCurrFOV = GetFov(vEyePos,vTarget,vAngle);

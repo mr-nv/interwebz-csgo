@@ -34,7 +34,7 @@ void RunCommand(CBaseEntity* pLocal, ValveSDK::CInput::CUserCmd* pUserCmd, float
 	static DWORD moveData[ 400 ];
 	if( !g_Valve.pMoveHelper ) return;
 
-	static auto CURRENTCOMMANDOFFSET = *( DWORD* )( Base::Utils::PatternSearch( /*client_panorama*/XorStr<0x62, 16, 0xD202627B>( "\x01\x0F\x0D\x00\x08\x13\x37\x19\x0B\x05\x03\x1F\x0F\x02\x11" + 0xD202627B ).s, ( PBYTE )"\x89\xBE\x00\x00\x00\x00\xE8\x00\x00\x00\x00\x85\xFF", /*xx????x????xx*/XorStr<0x4E, 14, 0x2391A5EA>( "\x36\x37\x6F\x6E\x6D\x6C\x2C\x6A\x69\x68\x67\x21\x22" + 0x2391A5EA ).s, 0, 0 ) + 2);
+	static auto CURRENTCOMMANDOFFSET = *( DWORD* )( Base::Utils::PatternSearch( /*client*/XorStr<0x41, 7, 0xAFB21C5E>( "\x22\x2E\x2A\x21\x2B\x32" + 0xAFB21C5E ).s, ( PBYTE )"\x89\xBE\x00\x00\x00\x00\xE8\x00\x00\x00\x00\x85\xFF", /*xx????x????xx*/XorStr<0x4E, 14, 0x2391A5EA>( "\x36\x37\x6F\x6E\x6D\x6C\x2C\x6A\x69\x68\x67\x21\x22" + 0x2391A5EA ).s, 0, 0 ) + 2);
 
 	*(PDWORD)((DWORD)pLocal + CURRENTCOMMANDOFFSET) = (DWORD)pUserCmd;
 
@@ -42,8 +42,8 @@ void RunCommand(CBaseEntity* pLocal, ValveSDK::CInput::CUserCmd* pUserCmd, float
 
 	//SetCurrentCmd(pPlayerCommand, pUserCmd);
 
-	static auto dwPredictionSeedAddress = *( PDWORD* )( Base::Utils::PatternSearch(/*client_panorama*/XorStr<0x62, 16, 0xD202627B>( "\x01\x0F\x0D\x00\x08\x13\x37\x19\x0B\x05\x03\x1F\x0F\x02\x11" + 0xD202627B ).s, ( PBYTE )"\x8B\x0D\x00\x00\x00\x00\xBA\x00\x00\x00\x00\xE8\x00\x00\x00\x00\x83\xC4\x04", "xx????x????x????xxx", 0, 0 ) + 2 );
-	static auto dwPredictionPlayerAddress = *( PDWORD* )( Base::Utils::PatternSearch(/*client_panorama*/XorStr<0x62, 16, 0xD202627B>( "\x01\x0F\x0D\x00\x08\x13\x37\x19\x0B\x05\x03\x1F\x0F\x02\x11" + 0xD202627B ).s, ( PBYTE )"\x89\x35\x00\x00\x00\x00\xF3\x0F\x10\x46", "xx????xxxx", 0, 0 ) + 2 );
+	static auto dwPredictionSeedAddress = *( PDWORD* )( Base::Utils::PatternSearch(/*client*/XorStr<0x41, 7, 0xAFB21C5E>( "\x22\x2E\x2A\x21\x2B\x32" + 0xAFB21C5E ).s, ( PBYTE )"\x8B\x0D\x00\x00\x00\x00\xBA\x00\x00\x00\x00\xE8\x00\x00\x00\x00\x83\xC4\x04", "xx????x????x????xxx", 0, 0 ) + 2 );
+	static auto dwPredictionPlayerAddress = *( PDWORD* )( Base::Utils::PatternSearch(/*client*/XorStr<0x41, 7, 0xAFB21C5E>( "\x22\x2E\x2A\x21\x2B\x32" + 0xAFB21C5E ).s, ( PBYTE )"\x89\x35\x00\x00\x00\x00\xF3\x0F\x10\x46", "xx????xxxx", 0, 0 ) + 2 );
 
 	*(PINT)(dwPredictionSeedAddress) = pUserCmd->random_seed;
 	*(PDWORD)(dwPredictionPlayerAddress) = (DWORD)pLocal;

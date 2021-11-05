@@ -33,7 +33,7 @@ void InitDllThread(void* ptr)
 	dwOriginCreateMove = g_pClientVMT.dwGetMethodAddress(22);
 	g_pClientVMT.dwHookMethod((DWORD)hkdCreateMove, 22);
 
-	g_Valve.pInput = *( ValveSDK::CInput** )( Base::Utils::PatternSearch(/*client_panorama*/XorStr<0x66, 16, 0xAC8B05E0>( "\x05\x0B\x01\x0C\x04\x1F\x33\x1D\x0F\x01\x1F\x03\x13\x1E\x15" + 0xAC8B05E0 ).s, ( PBYTE )"\xB9\x00\x00\x00\x00\xF3\x0F\x11\x04\x24\xFF\x50\x10", /*x????xxxxxxxx*/XorStr<0x08, 14, 0x17B34CA9>( "\x70\x36\x35\x34\x33\x75\x76\x77\x68\x69\x6A\x6B\x6C" + 0x17B34CA9 ).s, 0, 0 ) + 1 );
+	g_Valve.pInput = *( ValveSDK::CInput** )( Base::Utils::PatternSearch(/*client*/XorStr<0x41, 7, 0xAFB21C5E>( "\x22\x2E\x2A\x21\x2B\x32" + 0xAFB21C5E ).s, ( PBYTE )"\xB9\x00\x00\x00\x00\xF3\x0F\x11\x04\x24\xFF\x50\x10", /*x????xxxxxxxx*/XorStr<0x08, 14, 0x17B34CA9>( "\x70\x36\x35\x34\x33\x75\x76\x77\x68\x69\x6A\x6B\x6C" + 0x17B34CA9 ).s, 0, 0 ) + 1 );
 
 #ifdef DEBUGMODE
 	char szDebugString[1024];

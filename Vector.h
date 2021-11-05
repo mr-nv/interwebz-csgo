@@ -318,7 +318,10 @@ inline float Vector::Dot( const Vector& vOther ) const
 	return( a.x*vOther.x + a.y*vOther.y + a.z*vOther.z ); 
 }
 
-class VectorAligned : public Vector
+#define DECL_ALIGN(x)	__declspec(align(x))
+#define ALIGN16		DECL_ALIGN(16)
+
+class ALIGN16 VectorAligned : public Vector
 {
 public:
 	VectorAligned( )

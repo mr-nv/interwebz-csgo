@@ -48,7 +48,7 @@ int CNetworkedVariableManager::GetOffset(const char *tableName, const char *prop
 	if (!offset)
 	{
 #ifdef DEBUGMODE
-		printf("Failed to find offset for prop: %s from table: %s", propName, tableName);
+		printf("Failed to find offset for prop: %s from table: %s\n", propName, tableName);
 #endif
 		return 0;
 	}

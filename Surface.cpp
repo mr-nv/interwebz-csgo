@@ -242,7 +242,7 @@ void InitKeyValues( KeyValues* keyvalues, const char* type )
 {
 	typedef void( __thiscall* InitKeyValuesFn )( void*, const char* );
 
-	static auto address = Base::Utils::PatternSearch(/*client_panorama*/XorStr<0xFD, 16, 0x2D1C81B8>( "\x9E\x92\x96\x65\x6F\x76\x5C\x74\x64\x68\x68\x7A\x68\x67\x6A" + 0x2D1C81B8 ).s, ( PBYTE )"\x55\x8B\xEC\x51\x33\xC0\xC7\x45", /*xxxxxxxx*/XorStr<0x1E, 9, 0xD1B83E27>( "\x66\x67\x58\x59\x5A\x5B\x5C\x5D" + 0xD1B83E27 ).s, 0, 0 );
+	static auto address = Base::Utils::PatternSearch(/*client*/XorStr<0x41, 7, 0xAFB21C5E>( "\x22\x2E\x2A\x21\x2B\x32" + 0xAFB21C5E ).s,( PBYTE )"\x55\x8B\xEC\x51\x33\xC0\xC7\x45", /*xxxxxxxx*/XorStr<0x1E, 9, 0xD1B83E27>( "\x66\x67\x58\x59\x5A\x5B\x5C\x5D" + 0xD1B83E27 ).s, 0, 0 );
 #ifdef DEBUGMODE
 	char log[ 256 ];
 	sprintf_s( log, "InitKeyValues: 0x%X", address );
@@ -256,7 +256,7 @@ void InitKeyValues( KeyValues* keyvalues, const char* type )
 void LoadFromBuff( KeyValues* pThis, const char* pszFirst, const char* pszSecond )
 {
 	typedef void( __thiscall* LoadFromBufferFn )( KeyValues*, const char*, const char*, void*, const char*, void*, void* );
-	static auto address = Base::Utils::PatternSearch(/*client_panorama*/XorStr<0x4A, 16, 0xBF70B3C3>( "\x29\x27\x25\x28\x20\x3B\x0F\x21\x33\x3D\x3B\x27\x37\x3A\x39" + 0xBF70B3C3 ).s,(PBYTE)"\x55\x8B\xEC\x83\xE4\xF8\x83\xEC\x34\x53\x8B\x5D\x0C\x89", /*xxxxxxxxxxxxxx*/XorStr<0xB6, 15, 0xE36349CC>( "\xCE\xCF\xC0\xC1\xC2\xC3\xC4\xC5\xC6\xC7\xB8\xB9\xBA\xBB" + 0xE36349CC ).s, NULL, NULL );
+	static auto address = Base::Utils::PatternSearch(/*client*/XorStr<0x41, 7, 0xAFB21C5E>( "\x22\x2E\x2A\x21\x2B\x32" + 0xAFB21C5E ).s,(PBYTE)"\x55\x8B\xEC\x83\xE4\xF8\x83\xEC\x34\x53\x8B\x5D\x0C\x89", /*xxxxxxxxxxxxxx*/XorStr<0xB6, 15, 0xE36349CC>( "\xCE\xCF\xC0\xC1\xC2\xC3\xC4\xC5\xC6\xC7\xB8\xB9\xBA\xBB" + 0xE36349CC ).s, NULL, NULL );
 
 #ifdef DEBUGMODE
 	char szLog[256];

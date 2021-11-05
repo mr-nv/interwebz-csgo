@@ -1,4 +1,4 @@
-template <int XORSTART, int BUFLEN, int XREFKILLER>
+template <int XORSTART, int BUFLEN, unsigned int XREFKILLER>
 class XorStr
 {
 private: 
@@ -13,7 +13,7 @@ public:
 	}
 };
 
-template <int XORSTART, int BUFLEN, int XREFKILLER>
+template <int XORSTART, int BUFLEN, unsigned int XREFKILLER>
 XorStr<XORSTART,BUFLEN,XREFKILLER>::XorStr(const char* xs)
 {
 	int xvalue = XORSTART;
