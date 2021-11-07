@@ -638,16 +638,19 @@ int __stdcall hkdIN_KeyEvent(int eventcode,ValveSDK::ButtonCode_t keynum,const c
 {
 	int iRet = ( ( ( int( __thiscall* )( void*, int, ValveSDK::ButtonCode_t, const char* ) )g_pClientVMT.dwGetMethodAddress( 21 ) )( g_Valve.pClient, eventcode, keynum, pszCurrentBinding ) );
 
-	if(keynum == ValveSDK::MOUSE_WHEEL_UP)
+	if( bMenu )
 	{
-		ListItemArray[g_Menu.GetSmallTabIndex(1)].MoveUp(1);	
-		return 0;
-	}
+		if( keynum == ValveSDK::MOUSE_WHEEL_UP )
+		{
+			ListItemArray[ g_Menu.GetSmallTabIndex( 1 ) ].MoveUp( 1 );
+			return 0;
+		}
 
-	if(keynum == ValveSDK::MOUSE_WHEEL_DOWN)
-	{
-		ListItemArray[g_Menu.GetSmallTabIndex(1)].MoveDown(1);
-		return 0;
+		if( keynum == ValveSDK::MOUSE_WHEEL_DOWN )
+		{
+			ListItemArray[ g_Menu.GetSmallTabIndex( 1 ) ].MoveDown( 1 );
+			return 0;
+		}
 	}
 
 	return iRet;
