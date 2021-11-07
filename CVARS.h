@@ -65,10 +65,10 @@ public:
 		//CvarList[AntiAimY] = 1;
 		CvarList[BoxESP] = 1;
 		CvarList[AsusAmount] = 255;
-		CvarList[NoSky] = 1;
+		//CvarList[NoSky] = 1;
 		CvarList[NoHands] = 1;
 		CvarList[Autoshoot] = 1;
-		CvarList[Knifebot] = 1;
+		CvarList[Knifebot] = 0;
 		CvarList[AimFOV] = 360.0f;
 		CvarList[ModelAlpha] = 255;
 		CvarList[GlowEnemyOnly] = 1;

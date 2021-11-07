@@ -46,7 +46,8 @@ void __stdcall hkdPaintTraverse(unsigned vguiPanel, bool forceRepaint, bool allo
 	flip = !flip;
 	if( !flip ) return;
 
-	static std::string sXor = /*INTERWEBZ CSS*/XorStr<0x8C,14,0x50D39DA3>("\xC5\xC3\xDA\xCA\xC2\xC6\xD7\xD1\xCE\xB5\xD5\xC4\xCB"+0x50D39DA3).s;
+	//static std::string sXor = /*INTERWEBZ CSS*/XorStr<0x8C,14,0x50D39DA3>("\xC5\xC3\xDA\xCA\xC2\xC6\xD7\xD1\xCE\xB5\xD5\xC4\xCB"+0x50D39DA3).s;
+	static std::string sXor = /*INTERWEBZ CS:GO*/XorStr<0xA2, 16, 0x50A8FBB9>( "\xEB\xED\xF0\xE0\xF4\xF0\xED\xEB\xF0\x8B\xEF\xFE\x94\xE8\xFF" + 0x50A8FBB9 ).s;
 
 	// hehe
 	//static std::string sXor = "INTERWEBZ CSGO cracked by deathcore2013";

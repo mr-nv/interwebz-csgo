@@ -13,11 +13,15 @@ VOID CDraw::InitFonts()
 	m_WatermarkFont = g_pSurface->CreateFont();
 	g_pSurface->SetFontGlyphSet(m_WatermarkFont, /*Calibri*/XorStr<0xD7,8,0xBA08B53A>("\x94\xB9\xB5\xB3\xB9\xAE\xB4"+0xBA08B53A).s, 20, FW_DONTCARE, 0, 0, 0x200);
 
+	// Visitor TT2 BRK looks like shit in csgo
+
 	m_MenuFont = g_pSurface->CreateFont();
-	g_pSurface->SetFontGlyphSet(m_MenuFont, /*Visitor TT2 BRK*/XorStr<0x83,16,0x5F987AA5>("\xD5\xED\xF6\xEF\xF3\xE7\xFB\xAA\xDF\xD8\xBF\xAE\xCD\xC2\xDA"+0x5F987AA5).s, 15, 500, 0, 0, 0x200);
+	//g_pSurface->SetFontGlyphSet(m_MenuFont, /*Visitor TT2 BRK*/XorStr<0x83,16,0x5F987AA5>("\xD5\xED\xF6\xEF\xF3\xE7\xFB\xAA\xDF\xD8\xBF\xAE\xCD\xC2\xDA"+0x5F987AA5).s, 15, 500, 0, 0, 0x200); // 15
+	g_pSurface->SetFontGlyphSet( m_MenuFont, /*death smert mogila niggers*/XorStr<0x35, 27, 0x499DAB06>( "\x51\x53\x56\x4C\x51\x1A\x48\x51\x58\x4C\x4B\x60\x2C\x2D\x24\x2D\x29\x27\x67\x26\x20\x2D\x2C\x29\x3F\x3D" + 0x499DAB06 ).s, 15, 500, 0, 0, 0x200 ); // 15
 
 	m_ListItemFont = g_pSurface->CreateFont();
-	g_pSurface->SetFontGlyphSet(m_ListItemFont, /*Visitor TT2 BRK*/XorStr<0x83,16,0x5F987AA5>("\xD5\xED\xF6\xEF\xF3\xE7\xFB\xAA\xDF\xD8\xBF\xAE\xCD\xC2\xDA"+0x5F987AA5).s, 13, 500, 0, 0, 0x010);
+	//g_pSurface->SetFontGlyphSet(m_ListItemFont, /*Visitor TT2 BRK*/XorStr<0x83,16,0x5F987AA5>("\xD5\xED\xF6\xEF\xF3\xE7\xFB\xAA\xDF\xD8\xBF\xAE\xCD\xC2\xDA"+0x5F987AA5).s, 13, 500, 0, 0, 0x010); // 13
+	g_pSurface->SetFontGlyphSet( m_ListItemFont, /*death smert mogila niggers*/XorStr<0x98, 27, 0x0EC80F6E>( "\xFC\xFC\xFB\xEF\xF4\xBD\xED\xF2\xC5\xD3\xD6\x83\xC9\xCA\xC1\xCE\xC4\xC8\x8A\xC5\xC5\xCA\xC9\xCA\xC2\xC2" + 0x0EC80F6E ).s, 13, 500, 0, 0, 0x010 ); // 13
 }
 
 VOID CDraw::DrawString(unsigned long font, int x, int y, int r, int g, int b, const wchar_t *pszText)

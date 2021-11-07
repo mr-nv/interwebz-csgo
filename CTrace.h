@@ -125,7 +125,7 @@ namespace ValveSDK
 			VectorAligned  m_Delta;	// direction + length of the ray
 			VectorAligned  m_StartOffset;	// Add this to m_Start to get the actual ray start
 			VectorAligned  m_Extents;	// Describes an axis aligned box extruded along a ray
-			const matrix3x4_t* m_pWorldAxisTransform;
+			//const matrix3x4_t* m_pWorldAxisTransform;
 			bool	m_IsRay;	// are the extents zero?
 			bool	m_IsSwept;	// is delta != 0?
 

@@ -99,7 +99,7 @@ float fTriggValues[ ] = { 0,1,2 };
 char* pszTriggSeedNames[ ] = { "Off","Low","Medium", "High" };
 float fTriggSeedValues[ ] = { 0,1,2,3 };
 
-char* pszKnifeBotNames[ ] = { "Off","Right","Left" };
+char* pszKnifeBotNames[ ] = { "Off","Slash","Stab" };
 float fKnifeBotValues[ ] = { 0,1,2 };
 
 char* pszNoSpreadNames[ ] = { "Off","Normal","Roll" };
@@ -278,9 +278,13 @@ void cMenu::InitMenuElements()
 						sStrafeBot = /*STRAFE_BOT*/XorStr<0x68, 11, 0x7C8867FA>( "\x3B\x3D\x38\x2A\x2A\x28\x31\x2D\x3F\x25" + 0x7C8867FA ).s,
 						sAutoPistol = /*AUTO_PISTOL*/XorStr<0xF6, 12, 0x8455FF40>( "\xB7\xA2\xAC\xB6\xA5\xAB\xB5\xAE\xAA\xB0\x4C" + 0x8455FF40 ).s,
 						sPsilent = /*PSILENT_ON*/XorStr<0x28, 11, 0x7334646F>( "\x78\x7A\x63\x67\x69\x63\x7A\x70\x7F\x7F" + 0x7334646F ).s,
-						sAntiAimX = /*ANTI_AIM_X*/XorStr<0xDC, 11, 0xB5A3316F>( "\x9D\x93\x8A\x96\xBF\xA0\xAB\xAE\xBB\xBD" + 0xB5A3316F ).s,
-						sAntiAimY = /*ANTI_AIM_Y*/XorStr<0x88, 11, 0xA8A481A7>( "\xC9\xC7\xDE\xC2\xD3\xCC\xC7\xC2\xCF\xC8" + 0xA8A481A7 ).s,
-						sOther = /*OTHER*/XorStr<0xA2, 6, 0xB598161A>( "\xED\xF7\xEC\xE0\xF4" + 0xB598161A ).s;
+						sAntiAimX = /*AA_PITCH*/XorStr<0xF6, 9, 0xD19DBD06>( "\xB7\xB6\xA7\xA9\xB3\xAF\xBF\xB5" + 0xD19DBD06 ).s,
+						sAntiAimY = /*AA_YAW*/XorStr<0x58, 7, 0x33E5D2D2>( "\x19\x18\x05\x02\x1D\x0A" + 0x33E5D2D2 ).s,
+						sOther = /*OTHER*/XorStr<0xA2, 6, 0xB598161A>( "\xED\xF7\xEC\xE0\xF4" + 0xB598161A ).s,
+						sNoSky = /*NO_SKY*/XorStr<0xDF, 7, 0x7FBDD65F>( "\x91\xAF\xBE\xB1\xA8\xBD" + 0x7FBDD65F ).s,
+						sRemovesSky = /*Removes sky*/XorStr<0xCA, 12, 0xC99E94E3>( "\x98\xAE\xA1\xA2\xB8\xAA\xA3\xF1\xA1\xB8\xAD" + 0xC99E94E3 ).s,
+						sKnifeBot = /*KNIFE_BOT*/XorStr<0xB2, 10, 0xB0E3E502>( "\xF9\xFD\xFD\xF3\xF3\xE8\xFA\xF6\xEE" + 0xB0E3E502 ).s,
+						sKnifeBack = /*KNIFE_BACK*/XorStr<0x72, 11, 0x6F989AC5>( "\x39\x3D\x3D\x33\x33\x28\x3A\x38\x39\x30" + 0x6F989AC5 ).s;
 
 
 	//the usual x position for sections/itemlists
@@ -465,6 +469,10 @@ void cMenu::InitMenuElements()
 		msRemovals.AddElement( ONOFF, 0, sNoVisRecoil.data( ), "", &g_CVARS.CvarList[ NoVisRecoil ] );
 		msRemovals.AddElement( ONOFF, 0, sNoHands.data( ), "", &g_CVARS.CvarList[ NoHands ] );
 
+		msRemovals.RestartSection( );
+
+		msRemovals.AddElement( ONOFF, iRowTwo, sNoSky.data( ), sRemovesSky.data( ), &g_CVARS.CvarList[ NoSky ] );
+
 		msMiscOther.Draw( iUsualX, m_y + 220, m_w - 22, 135, sOther.data( ) );
 
 		msMiscOther.AddElement( ONOFF, 0, sBunnyHop.data( ), "", &g_CVARS.CvarList[ Bunnyhop ] );
@@ -485,6 +493,11 @@ void cMenu::InitMenuElements()
 
 		msMiscOther.SetValueNames( pszAntiAimYNames, fAntiAimYValues, 2 );
 		msMiscOther.AddElement( DROPDOWN, iRowThree, sAntiAimY.data( ), "", &g_CVARS.CvarList[ AntiAimY ] );
+
+		msMiscOther.SetValueNames( pszKnifeBotNames, fKnifeBotValues, 3 );
+		msMiscOther.AddElement( DROPDOWN, iRowThree, sKnifeBot.data( ), "", &g_CVARS.CvarList[ Knifebot ] );
+
+		msMiscOther.AddElement( ONOFF, iRowThree, sKnifeBack.data( ), "", &g_CVARS.CvarList[ BackstabOnly ] );
 
 		msMisc.PostSection( );
 		msRemovals.PostSection( );
