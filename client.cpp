@@ -80,7 +80,7 @@ void __stdcall MyMovePacket(int sequence_number, float input_sample_frametime, b
 		pUserCmd->buttons &= ~IN_ATTACK;
 
 	//SMAC proof bhop by how2 
-	if(g_CVARS.CvarList[Bunnyhop])
+	if(g_CVARS.CvarList[Bunnyhop] && pMe->GetMoveType() != MOVETYPE_LADDER && pMe->GetMoveType() != MOVETYPE_NOCLIP && !(pMe->GetFlags() & FL_INWATER))
 	{
 		static bool bLastJumped = false;
 		static bool bShouldFake = false;
