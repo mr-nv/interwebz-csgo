@@ -335,6 +335,8 @@ private:
 	static const char* ( *s_pfGetStringForSymbol )( int symbol );
 	static void* s_pGrowableStringTable;
 
+	char nigger[ 0xC ];
+
 public:
 	// Functions that invoke the default behavior
 	static int GetSymbolForStringClassic( const char* name, bool bCreate = true );

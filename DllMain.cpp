@@ -20,7 +20,7 @@ static HMODULE DllBaseAddress() // works with manually mapped dlls (will get us 
 }
 
 void InitDllThread(void* ptr)
-{	
+{
 	g_Valve.initSDK();
 
 	g_NetworkedVariableManager.Init();

@@ -241,9 +241,9 @@ void __stdcall hkdPaintTraverse(unsigned vguiPanel, bool forceRepaint, bool allo
 
 void InitKeyValues( KeyValues* keyvalues, const char* type )
 {
-	typedef void( __thiscall* InitKeyValuesFn )( void*, const char* );
+	typedef void( __thiscall* InitKeyValuesFn )( void*, const char*, void*, int );
 
-	static auto address = Base::Utils::PatternSearch(/*client*/XorStr<0x41, 7, 0xAFB21C5E>( "\x22\x2E\x2A\x21\x2B\x32" + 0xAFB21C5E ).s,( PBYTE )"\x55\x8B\xEC\x51\x33\xC0\xC7\x45", /*xxxxxxxx*/XorStr<0x1E, 9, 0xD1B83E27>( "\x66\x67\x58\x59\x5A\x5B\x5C\x5D" + 0xD1B83E27 ).s, 0, 0 );
+	static auto address = Base::Utils::PatternSearch(/*client*/XorStr<0x41, 7, 0xAFB21C5E>( "\x22\x2E\x2A\x21\x2B\x32" + 0xAFB21C5E ).s,( PBYTE )"\x55\x8B\xEC\x56\x8B\xF1\x33\xC0\x8B\x4D\x0C\x81", "xxxxxxxxxxxx", 0, 0 );
 #ifdef DEBUGMODE
 	char log[ 256 ];
 	sprintf_s( log, "InitKeyValues: 0x%X", address );
@@ -251,7 +251,7 @@ void InitKeyValues( KeyValues* keyvalues, const char* type )
 #endif
 
 	static auto function = ( InitKeyValuesFn )( address );
-	function( keyvalues, type );
+	function( keyvalues, type, 0, 0 );
 }
 
 void LoadFromBuff( KeyValues* pThis, const char* pszFirst, const char* pszSecond )

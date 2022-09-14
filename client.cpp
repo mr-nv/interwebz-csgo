@@ -544,7 +544,11 @@ void __fastcall hkdFrameStageNotify(void* ecx, void*, ClientFrameStage_t curStag
 void __stdcall hkdDrawModelExecute(void* rendercontext, const ValveSDK::DrawModelState_t &state, const ValveSDK::ModelRenderInfo_t &pInfo, matrix3x4_t *pCustomBoneToWorld)
 {
 	//idgaf cba to use inline asm here when i can just unhook and clean call with 1 line
-	g_pModelRenderVMT.UnHook();
+	//g_pModelRenderVMT.UnHook();
+	//int iRet = ( ( ( int( __thiscall* )( void*, int, ValveSDK::ButtonCode_t, const char* ) )g_pClientVMT.dwGetMethodAddress( 21 ) )( g_Valve.pClient, eventcode, keynum, pszCurrentBinding ) );
+
+	typedef void( __thiscall* DrawModelExecuteFn )( void*, void*, const ValveSDK::DrawModelState_t&, const ValveSDK::ModelRenderInfo_t&, matrix3x4_t* );
+	static auto original = ( DrawModelExecuteFn )g_pModelRenderVMT.dwGetMethodAddress( 21 );
 
 	static ValveSDK::IMaterial *pNew = CreateMaterial(FALSE,FALSE);
 	static ValveSDK::IMaterial *pIgnoreNew = CreateMaterial(FALSE,TRUE);
@@ -598,13 +602,15 @@ void __stdcall hkdDrawModelExecute(void* rendercontext, const ValveSDK::DrawMode
 				g_Valve.pRenderView->SetBlend(fAlphaAdjusted);
 		}
 
-		g_Valve.pModelRender->DrawModelExecute(rendercontext, state,pInfo,pCustomBoneToWorld);
+		original( g_Valve.pModelRender, rendercontext, state, pInfo, pCustomBoneToWorld );
+		//g_Valve.pModelRender->DrawModelExecute(rendercontext, state,pInfo,pCustomBoneToWorld);
 
 		if(g_CVARS.CvarList[Chams] == 2)
 		{
 			FullCham((g_CVARS.CvarList[BrightChams] ? pBrightNew : pNew),pInfo,CT_VIS,T_VIS);
 
-			g_Valve.pModelRender->DrawModelExecute(rendercontext,state,pInfo,pCustomBoneToWorld);
+			original( g_Valve.pModelRender, rendercontext, state, pInfo, pCustomBoneToWorld );
+			//g_Valve.pModelRender->DrawModelExecute(rendercontext,state,pInfo,pCustomBoneToWorld);
 		}
 
 		g_Valve.pModelRender->ForcedMaterialOverride(NULL);
@@ -619,19 +625,21 @@ void __stdcall hkdDrawModelExecute(void* rendercontext, const ValveSDK::DrawMode
 				g_Valve.pRenderView->SetBlend(fAlphaAdjusted);
 		}
 
-		g_Valve.pModelRender->DrawModelExecute(rendercontext,state,pInfo,pCustomBoneToWorld);
+		original( g_Valve.pModelRender, rendercontext, state, pInfo, pCustomBoneToWorld );
+		//g_Valve.pModelRender->DrawModelExecute(rendercontext,state,pInfo,pCustomBoneToWorld);
 		g_Valve.pModelRender->ForcedMaterialOverride(NULL);
 	}
 	else
 	{
-		g_Valve.pModelRender->DrawModelExecute(rendercontext,state,pInfo,pCustomBoneToWorld);
+		original( g_Valve.pModelRender, rendercontext, state, pInfo, pCustomBoneToWorld );
+		//g_Valve.pModelRender->DrawModelExecute(rendercontext,state,pInfo,pCustomBoneToWorld);
 		g_Valve.pModelRender->ForcedMaterialOverride(NULL);
 	}
 
 	if(g_CVARS.CvarList[XQZ] && bPlayerModel && pPlayerMaterial[0])
 		pPlayerMaterial[0]->SetMaterialVarFlag(ValveSDK::MATERIAL_VAR_IGNOREZ,false);
 
-	g_pModelRenderVMT.ReHook();
+	//g_pModelRenderVMT.ReHook();
 }
 
 int __stdcall hkdIN_KeyEvent(int eventcode,ValveSDK::ButtonCode_t keynum,const char *pszCurrentBinding)
